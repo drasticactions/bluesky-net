@@ -5,13 +5,13 @@ internal static class Constants
     internal const string BlueskyApiClient = "Bluesky";
     internal const string ContentMediaType = "application/json";
     internal const string AcceptedMediaType = "application/json";
-    
+
     internal static class Urls
     {
         internal static class AtProtoServer
         {
             internal const string Login = "/xrpc/com.atproto.server.createSession";
-            internal const string RefreshSession = "/xrpc/com.atproto.server.refreshSession";    
+            internal const string RefreshSession = "/xrpc/com.atproto.server.refreshSession";
         }
 
         internal static class AtProtoIdentity
@@ -27,6 +27,7 @@ internal static class Constants
         internal static class Bluesky
         {
             internal const string GetAuthorFeed = "/xrpc/app.bsky.feed.getAuthorFeed";
+            internal const string GetTimeline = "/xrpc/app.bsky.feed.getTimeline";
             internal const string GetActorProfile = "/xrpc/app.bsky.actor.getProfile";
         }
 
@@ -35,5 +36,11 @@ internal static class Constants
     internal class HeaderNames
     {
         internal const string UserAgent = "user-agent";
+    }
+
+    internal static class FacetTypes
+    {
+        internal const string Link = "app.bsky.richtext.facet#link";
+        internal const string Mention = "app.bsky.richtext.facet#mention";
     }
 }

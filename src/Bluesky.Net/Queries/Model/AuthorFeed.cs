@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public record AuthorFeed(FeedViewPost[] Feed, string? Cursor);
 
+public record Timeline(FeedViewPost[] Feed, string? Cursor);
+
 public record Profile(string Did,
     string Handle,
     string DisplayName,

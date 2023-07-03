@@ -67,8 +67,12 @@ public interface IBlueskyApi
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<Result<AuthorFeed>> GetAuthorFeed(GetAuthorFeed query, CancellationToken cancellationToken);
-    ///
-    
-    
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Result<Timeline>> GetTimeline(GetTimeline query, CancellationToken cancellationToken);
 }

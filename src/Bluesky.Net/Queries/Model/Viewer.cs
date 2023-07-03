@@ -2,5 +2,6 @@ namespace Bluesky.Net.Queries.Model;
 
 public record Viewer(
     bool Muted,
-    bool BlockedBy
+    bool BlockedBy,
+    string Following
 );

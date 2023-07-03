@@ -1,23 +1,20 @@
 namespace Bluesky.Net.Commands.Bsky.Feed.Model;
 
+using Bluesky.Net.Internals;
 using Models;
 
 /// <summary>
 /// A mention to an actor
 /// </summary>
-public class Mention : Facet
+public class Mention : FacetFeature
 {
     /// <summary>
     /// Ctor 
     /// </summary>
     /// <param name="did">A <see cref="Did"/> of the actor</param>
-    /// <param name="startPositionInText">The first byte of the mention in the text</param>
-    /// <param name="endPositionInText">The last byte of the mention in the text</param>
-    public Mention(Did did, int startPositionInText, int endPositionInText)
-        : base(new ByteSlice(startPositionInText, endPositionInText))
+    public Mention(Did did)
     {
         Did = did;
-        AddFeature("did", did);
     }
 
     /// <summary>
@@ -25,5 +22,5 @@ public class Mention : Facet
     /// </summary>
     public Did Did { get; }
 
-    protected override string Type => "app.bsky.richtext.facet#mention";
+    public override string Type => Constants.FacetTypes.Mention;
 }

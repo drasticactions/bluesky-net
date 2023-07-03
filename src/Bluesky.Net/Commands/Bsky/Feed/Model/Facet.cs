@@ -6,14 +6,8 @@ using System.Linq;
 /// <summary>
 /// See <see cref="Link" /> and <see cref="Mention"/> 
 /// </summary>
-public abstract class Facet
+public class Facet
 {
-    protected abstract string Type { get; }
-    protected void AddFeature(string key, object value)
-    {
-        Features.First().Add(key,value);
-    }
-    
     /// <summary>
     /// The start and end of the the facet in the enriched text
     /// </summary>
@@ -22,13 +16,14 @@ public abstract class Facet
     /// <summary>
     /// The features of the Facet
     /// </summary>
-    public List<Dictionary<string, object>> Features { get; }
+    public List<FacetFeature> Features { get; }
 
-    protected Facet(ByteSlice index)
+    public Facet(ByteSlice index)
     {
         Index = index;
-        Features = new() {new() {{"$type", Type}}};
+        this.Features = new List<FacetFeature>();
     }
 
-    
+    protected void AddFeature(FacetFeature feature)
+        => this.Features.Add(feature);
 }

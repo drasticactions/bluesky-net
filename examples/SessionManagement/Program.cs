@@ -20,7 +20,7 @@ JsonSerializerOptions printOptions =
         WriteIndented = true,
         Converters =
         {
-            new DidJsonConverter(), new AtUriJsonConverter(), new NsidJsonConverter(), new TidJsonConverter()
+            new DidJsonConverter(), new AtUriJsonConverter(), new NsidJsonConverter(), new TidJsonConverter(), new FacetJsonConverter()
         },
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
@@ -81,22 +81,29 @@ await result.SwitchAsync(async session =>
                     Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
                 }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
                 break;
+            case Menu.GetTimeline:
+                Result<Timeline> timeline = await api.GetTimeline(new GetTimeline(Limit: 15), CancellationToken.None);
+                timeline.Switch(refresh =>
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
+                }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                break;
             case Menu.CreatePost:
                 string text =
                 @"Link to Google This post is created with Bluesky.Net. A library to interact with Bluesky. A mention to myself and an emoji '🌅'";
                 int mentionStart = text.IndexOf("myself", StringComparison.InvariantCulture);
                 int mentionEnd = mentionStart + Encoding.Default.GetBytes("myself").Length;
-                CreatePost post = new(
-                    text,
-                    new Link("www.google.com", 0, "Link to Google".Length),
-                    new Mention(session.Did, mentionStart, mentionEnd));
-                //Create a post
-                Result<CreatePostResponse> created = await api.CreatePost(post, CancellationToken.None);
+                //CreatePost post = new(
+                //    text,
+                //    new Link("www.google.com", 0, "Link to Google".Length),
+                //    new Mention(session.Did, mentionStart, mentionEnd));
+                ////Create a post
+                //Result<CreatePostResponse> created = await api.CreatePost(post, CancellationToken.None);
 
-                created.Switch(x =>
-                {
-                    Console.WriteLine(JsonSerializer.Serialize(x, printOptions));
-                }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                //created.Switch(x =>
+                //{
+                //    Console.WriteLine(JsonSerializer.Serialize(x, printOptions));
+                //}, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
                 break;
             case Menu.Exit:
             default:
@@ -116,6 +123,7 @@ enum Menu
     ResolveHandle,
     RefreshToken,
     GetAuthorFeed,
+    GetTimeline,
     CreatePost,
     Exit
 }

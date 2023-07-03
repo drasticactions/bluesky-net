@@ -1,5 +1,6 @@
 namespace Bluesky.Net.Internals;
 
+using Bluesky.Net.Commands.Bsky.Feed.Model;
 using Json;
 using Models;
 using System;
@@ -18,7 +19,8 @@ internal static class HttpClientExtensions
             new DidJsonConverter(),
             new AtUriJsonConverter(),
             new NsidJsonConverter(),
-            new TidJsonConverter()
+            new TidJsonConverter(),
+            new FacetJsonConverter(),
         }, PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 

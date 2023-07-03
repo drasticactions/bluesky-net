@@ -12,5 +12,7 @@ public class Record
     
     public Facet[]? Facets { get; set; }
 
+    public string[] Langs { get; set; }
+
     [JsonPropertyName("$type")] public string Type { get; set; }
 }

@@ -32,6 +32,21 @@ internal class BlueskyFeed
                 authorFeed => (authorFeed ?? new AuthorFeed(Array.Empty<FeedViewPost>(), null))!,
                 error => error!);
     }
+
+    internal async Task<Result<Timeline>> GetTimeline(GetTimeline query, CancellationToken cancellationToken)
+    {
+        string url = $"{Constants.Urls.Bluesky.GetTimeline}?algorithm={query.Algorithm}&limit={query.Limit}";
+        if (query.Cursor is not null)
+        {
+            url += $"&cursor={query.Cursor}";
+        }
+
+        Multiple<Timeline?, Error> result = await _client.Get<Timeline>(url, cancellationToken);
+        return result
+            .Match<Result<Timeline>>(
+                timeline => (timeline ?? new Timeline(Array.Empty<FeedViewPost>(), null))!,
+                error => error!);
+    }
 }
 
 internal class AtProtoIdentity
