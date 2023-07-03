@@ -10,6 +10,10 @@ using System.Text.Json.Serialization;
 
 public class FacetJsonConverter : JsonConverter<Facet?>
 {
+    public FacetJsonConverter()
+    {
+    }
+    
     public override bool CanConvert(Type type)
     {
         return type.IsAssignableFrom(typeof(Facet));
@@ -67,6 +71,23 @@ public class FacetJsonConverter : JsonConverter<Facet?>
 
     public override void Write(Utf8JsonWriter writer, Facet? value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, value);
+        if (value is null)
+            return;
+        
+        writer.WriteStartObject();
+        writer.WriteStartObject("index");
+        writer.WriteNumber("byteStart", value.Index.ByteStart);
+        writer.WriteNumber("byteEnd", value.Index.ByteEnd);
+        writer.WriteEndObject();
+        writer.WriteStartArray("features");
+        foreach (var item in value.Features)
+        {
+            if (item is Link link)
+            {
+                JsonSerializer.Serialize(writer, link, options);
+            }
+        }
+        writer.WriteEndArray();
+        writer.WriteEndObject();
     }
 }

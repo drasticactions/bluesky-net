@@ -9,10 +9,10 @@ public class Record
     public string Text { get; set; }
 
     public DateTime CreatedAt { get; set; }
-    
-    public Facet[]? Facets { get; set; }
 
-    public string[] Langs { get; set; }
+    public Facet[]? Facets { get; set; } = Array.Empty<Facet>();
+
+    public string[] Langs { get; set; } = Array.Empty<string>();
 
     [JsonPropertyName("$type")] public string Type { get; set; }
 }

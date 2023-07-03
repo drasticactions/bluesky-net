@@ -1,6 +1,8 @@
 ﻿namespace Bluesky.Net.Commands.Bsky.Feed.Model;
 
+using System.Text.Json.Serialization;
+
 public abstract class FacetFeature
 {
-    public abstract string Type { get; }
+    [JsonPropertyName("$type")] public abstract string Type { get; }
 }

@@ -89,21 +89,33 @@ await result.SwitchAsync(async session =>
                 }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
                 break;
             case Menu.CreatePost:
-                string text =
-                @"Link to Google This post is created with Bluesky.Net. A library to interact with Bluesky. A mention to myself and an emoji '🌅'";
-                int mentionStart = text.IndexOf("myself", StringComparison.InvariantCulture);
-                int mentionEnd = mentionStart + Encoding.Default.GetBytes("myself").Length;
-                //CreatePost post = new(
-                //    text,
-                //    new Link("www.google.com", 0, "Link to Google".Length),
-                //    new Mention(session.Did, mentionStart, mentionEnd));
-                ////Create a post
-                //Result<CreatePostResponse> created = await api.CreatePost(post, CancellationToken.None);
+                var prompt = Prompt.Input<string>("Enter post text", "Hello from API World");
+                if (!string.IsNullOrEmpty(prompt))
+                {
+                    var facetList = new List<Facet>();
+                    var addLink = Prompt.Input<bool>("Add link?");
+                    
+                    if (addLink)
+                    {
+                        var linkText = Prompt.Input<string>("Enter link text", "Link to Google");
+                        prompt = $"{prompt} {linkText}";
+                        int promptStart = prompt.IndexOf(linkText, StringComparison.InvariantCulture);
+                        int promptEnd = promptStart + Encoding.Default.GetBytes(linkText).Length;
+                        var linkUrl = Prompt.Input<string>("Enter link url", defaultValue: "https://www.google.com");
+                        var facet = new Facet(new ByteSlice(promptStart, promptEnd));
+                        facet.AddFeature(new Link(linkUrl));
+                        facetList.Add(facet);
+                    }
 
-                //created.Switch(x =>
-                //{
-                //    Console.WriteLine(JsonSerializer.Serialize(x, printOptions));
-                //}, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                    var test = JsonSerializer.Serialize(facetList.ToArray(), printOptions);
+                    CreatePost post = new(
+                        prompt, facetList.ToArray());
+                    Result<CreatePostResponse> created = await api.CreatePost(post, CancellationToken.None);
+                    created.Switch(x =>
+                    {
+                        Console.WriteLine(JsonSerializer.Serialize(x, printOptions));
+                    }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                }
                 break;
             case Menu.Exit:
             default:

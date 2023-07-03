@@ -24,6 +24,6 @@ public class Facet
         this.Features = new List<FacetFeature>();
     }
 
-    protected void AddFeature(FacetFeature feature)
+    public void AddFeature(FacetFeature feature)
         => this.Features.Add(feature);
 }

@@ -54,4 +54,8 @@
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="[6.29.0,)" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Json\ObjectArrayConverter.cs" />
+    </ItemGroup>
+
 </Project>

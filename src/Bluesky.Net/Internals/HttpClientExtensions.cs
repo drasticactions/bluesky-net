@@ -4,6 +4,7 @@ using Bluesky.Net.Commands.Bsky.Feed.Model;
 using Json;
 using Models;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -20,7 +21,7 @@ internal static class HttpClientExtensions
             new AtUriJsonConverter(),
             new NsidJsonConverter(),
             new TidJsonConverter(),
-            new FacetJsonConverter(),
+            new FacetJsonConverter()
         }, PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
@@ -30,7 +31,11 @@ internal static class HttpClientExtensions
         T body,
         CancellationToken cancellationToken)
     {
-        StringContent content = new(JsonSerializer.Serialize(body, Options), Encoding.UTF8, "application/json");
+        var jsonContent = JsonSerializer.Serialize(body, Options);
+        StringContent content = new(jsonContent, Encoding.UTF8, "application/json");
+        #if DEBUG
+        System.Diagnostics.Debug.WriteLine($"POST {url}: {jsonContent}");
+        #endif
         var message = await client.PostAsync(url, content, cancellationToken);
         if (!message.IsSuccessStatusCode)
         {
