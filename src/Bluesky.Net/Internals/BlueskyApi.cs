@@ -32,6 +32,7 @@ internal class BlueskyApi : IBlueskyApi, IDisposable
         _identity = new(_client);
         _repo = new(_client);
         _actor = new(_client);
+        _feed = new(_client);
         _server.UserLoggedIn += OnUserLoggedIn;
         _server.TokenRefreshed += UpdateBearerToken;
     }
@@ -73,10 +74,8 @@ internal class BlueskyApi : IBlueskyApi, IDisposable
         return _repo.Create(record, cancellationToken);
     }
 
-    public Task<Result<AuthorFeed>> Query(GetAuthorFeed query, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<Result<AuthorFeed>> GetAuthorFeed(GetAuthorFeed query, CancellationToken cancellationToken)
+        => _feed.GetAuthorFeed(query, cancellationToken);
 
     public void Dispose()
     {

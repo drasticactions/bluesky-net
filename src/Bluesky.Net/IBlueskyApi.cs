@@ -1,5 +1,6 @@
 namespace Bluesky.Net;
 
+using Bluesky.Net.Queries.Feed;
 using Commands.AtProto.Server;
 using Commands.Bsky.Feed;
 using Models;
@@ -65,7 +66,7 @@ public interface IBlueskyApi
     /// <param name="query"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// Task<Result<AuthorFeed>> Query(GetAuthorFeed query, CancellationToken cancellationToken);
+    Task<Result<AuthorFeed>> GetAuthorFeed(GetAuthorFeed query, CancellationToken cancellationToken);
     ///
     
     

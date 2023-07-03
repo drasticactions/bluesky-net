@@ -18,9 +18,9 @@ internal class BlueskyFeed
         _client = client;
     }
 
-    internal async Task<Result<AuthorFeed>> Query(GetAuthorFeed query, CancellationToken cancellationToken)
+    internal async Task<Result<AuthorFeed>> GetAuthorFeed(GetAuthorFeed query, CancellationToken cancellationToken)
     {
-        string url = $"{Constants.Urls.Bluesky.GetAuthorFeed}?actor={query.Actor}&limit={query.Limit}";
+        string url = $"{Constants.Urls.Bluesky.GetAuthorFeed}?actor={query.Handle}&limit={query.Limit}";
         if (query.Cursor is not null)
         {
             url += $"&cursor={query.Cursor}";
