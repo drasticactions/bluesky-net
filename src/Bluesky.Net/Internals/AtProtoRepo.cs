@@ -16,11 +16,20 @@ internal class AtProtoRepo
         _client = client;
     }
 
-    public Task<Result<CreatePostResponse>> Create(CreateRecord record, CancellationToken cancellationToken)
+    public Task<Result<CreatePostResponse>> Create(CreatePostRecord record, CancellationToken cancellationToken)
     {
         return
             _client
-                .Post<CreateRecord, CreatePostResponse>(
+                .Post<CreatePostRecord, CreatePostResponse>(
+                    Constants.Urls.AtProtoRepo.CreateRecord, record,
+                    cancellationToken);
+    }
+
+    public Task<Result<CreatePostResponse>> Create(CreateLikeRecord record, CancellationToken cancellationToken)
+    {
+        return
+            _client
+                .Post<CreateLikeRecord, CreatePostResponse>(
                     Constants.Urls.AtProtoRepo.CreateRecord, record,
                     cancellationToken);
     }

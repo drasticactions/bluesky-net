@@ -1,6 +1,8 @@
 namespace Bluesky.Net.Commands.Bsky.Feed;
 
 using Model;
+using System;
+
 /// <summary>
 /// A command to create a post
 /// </summary>
@@ -8,6 +10,8 @@ using Model;
 /// <param name="Facets">The <see cref="Facet"/> of the text</param>
 public record CreatePost(
     string Text,
-    params Facet[]? Facets)
+    Facet[]? Facets,
+    DateTime? CreatedAt = default
+    )
 {
 }

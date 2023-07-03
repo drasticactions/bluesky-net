@@ -21,7 +21,7 @@ internal static class HttpClientExtensions
             new AtUriJsonConverter(),
             new NsidJsonConverter(),
             new TidJsonConverter(),
-            new FacetJsonConverter()
+            new FacetJsonConverter(),
         }, PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 

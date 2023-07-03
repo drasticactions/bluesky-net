@@ -59,7 +59,15 @@ public interface IBlueskyApi
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<Result<CreatePostResponse>> CreatePost(CreatePost post, CancellationToken cancellationToken);
-    
+
+    /// <summary>
+    /// Creates a post
+    /// </summary>
+    /// <param name="post"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Result<CreatePostResponse>> CreateLike(CreateLike post, CancellationToken cancellationToken);
+
     /// <summary>
     /// 
     /// </summary>

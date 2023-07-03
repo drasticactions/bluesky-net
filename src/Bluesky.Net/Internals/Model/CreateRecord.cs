@@ -1,5 +1,5 @@
 namespace Bluesky.Net.Internals.Model;
 
-public record CreateRecord(string Collection, string Repo, Record Record)
-{
-}
+public record CreatePostRecord(string Collection, string Repo, PostRecord Record);
+
+public record CreateLikeRecord(string Collection, string Repo, LikeRecord Record);

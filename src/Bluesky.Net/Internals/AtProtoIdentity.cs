@@ -36,7 +36,7 @@ internal class BlueskyFeed
 
     internal async Task<Result<PostCollection>> GetPosts(GetPosts query, CancellationToken cancellationToken)
     {
-        var answer = string.Join(",", query.Uris.Select(n => n.ToAtUriString()));
+        var answer = string.Join(",", query.Uris.Select(n => n.ToString()));
         string url = $"{Constants.Urls.Bluesky.GetPosts}?uris={answer}";
         Multiple<PostCollection?, Error> result = await _client.Get<PostCollection>(url, cancellationToken);
         return result
@@ -47,7 +47,7 @@ internal class BlueskyFeed
 
     internal async Task<Result<LikesFeed>> GetLikes(GetLikes query, CancellationToken cancellationToken)
     {
-        string url = $"{Constants.Urls.Bluesky.GetLikes}?uri={query.Uri.ToAtUriString()}&limit={query.Limit}";
+        string url = $"{Constants.Urls.Bluesky.GetLikes}?uri={query.Uri.ToString()}&limit={query.Limit}";
 
         if (query.Cid is not null)
         {
@@ -67,7 +67,7 @@ internal class BlueskyFeed
 
     internal async Task<Result<RepostedFeed>> GetRepostedBy(GetRepostedBy query, CancellationToken cancellationToken)
     {
-        string url = $"{Constants.Urls.Bluesky.GetRepostedBy}?uri={query.Uri.ToAtUriString()}&limit={query.Limit}";
+        string url = $"{Constants.Urls.Bluesky.GetRepostedBy}?uri={query.Uri.ToString()}&limit={query.Limit}";
 
         if (query.Cid is not null)
         {

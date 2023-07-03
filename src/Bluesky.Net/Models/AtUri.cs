@@ -34,9 +34,9 @@ public class AtUri
     public string Hostname => _host;
     public string Collection => Pathname.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)[0];
     public string Rkey => Pathname.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ElementAtOrDefault(1);
-    public string Href => ToAtUriString();
+    public string Href => this.ToString();
 
-    public string ToAtUriString()
+    public string ToString()
     {
         var buffer = new System.Text.StringBuilder();
         buffer.Append("at://");

@@ -11,7 +11,7 @@ public record PostView(
     int RepostCount,
     int LikeCount,
     Profile Author,
-    Record Record,
+    PostRecord Record,
     DateTime IndexedAt,
     IReadOnlyList<Label> Labels
     );

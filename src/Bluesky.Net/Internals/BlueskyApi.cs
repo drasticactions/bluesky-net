@@ -60,15 +60,35 @@ internal class BlueskyApi : IBlueskyApi, IDisposable
         CreatePost command,
         CancellationToken cancellationToken)
     {
-        CreateRecord record = new(
-            "app.bsky.feed.post",
+        CreatePostRecord record = new(
+            Constants.FeedType.Post,
             _sessionManager!.Session!.Did.ToString()!,
-            new Record()
+            new PostRecord()
             {
                 Text = command.Text,
-                Type = "app.bsky.feed.post",
-                CreatedAt = DateTime.UtcNow,
+                Type = Constants.FeedType.Post,
+                CreatedAt = command.CreatedAt ?? DateTime.UtcNow,
                 Facets = command.Facets
+            });
+
+        return _repo.Create(record, cancellationToken);
+    }
+
+    public Task<Result<CreatePostResponse>> CreateLike(
+    CreateLike command,
+    CancellationToken cancellationToken)
+    {
+        CreateLikeRecord record = new(
+            Constants.FeedType.Like,
+            _sessionManager!.Session!.Did.ToString()!,
+            new LikeRecord()
+            {
+                Subject = new Subject() {
+                    Cid = command.Cid,
+                    Uri = command.Uri.ToString(),
+                },
+                Type = Constants.FeedType.Like,
+                CreatedAt = command.CreatedAt ?? DateTime.UtcNow,
             });
 
         return _repo.Create(record, cancellationToken);

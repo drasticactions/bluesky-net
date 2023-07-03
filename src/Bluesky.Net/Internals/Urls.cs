@@ -46,4 +46,10 @@ internal static class Constants
         internal const string Link = "app.bsky.richtext.facet#link";
         internal const string Mention = "app.bsky.richtext.facet#mention";
     }
+
+    internal static class FeedType
+    {
+        internal const string Like = "app.bsky.feed.like";
+        internal const string Post = "app.bsky.feed.post";
+    }
 }

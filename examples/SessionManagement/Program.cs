@@ -77,7 +77,7 @@ await result.SwitchAsync(async session =>
                 break;
             case Menu.GetAuthorFeed:
                 var authorHandle = Prompt.Input<string>("Enter Author handle", defaultValue: "drasticactions.bsky.social");
-                Result<AuthorFeed> authorFeed = await api.GetAuthorFeed(new GetAuthorFeed(new AtUri(authorHandle), 10), CancellationToken.None);
+                Result<AuthorFeed> authorFeed = await api.GetAuthorFeed(new GetAuthorFeed(new AtUri(authorHandle), 100), CancellationToken.None);
                 authorFeed.Switch(refresh =>
                 {
                     Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
@@ -88,6 +88,17 @@ await result.SwitchAsync(async session =>
                 timeline.Switch(refresh =>
                 {
                     Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
+                }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                break;
+            case Menu.CreateLike:
+                var cid = "bafyreiawb5zegsyxf4m2vgmvhqurat6w2rsam5craret5eegdzxifwgldi";
+                var uri = "at://did:plc:4g5yti2ybgwdgpa3n4zgh36b/app.bsky.feed.post/3jzmgbpvq5e2f";
+
+                CreateLike like = new(cid, new AtUri(uri));
+                Result<CreatePostResponse> likeCreated = await api.CreateLike(like, CancellationToken.None);
+                likeCreated.Switch(x =>
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(x, printOptions));
                 }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
                 break;
             case Menu.CreatePost:
@@ -120,7 +131,7 @@ await result.SwitchAsync(async session =>
                 }
                 break;
             case Menu.GetLikes:
-                var likes = await api.GetLikes(new GetLikes(new AtUri("at://did:plc:juem56avlegp5z4hctyxzg7z/app.bsky.feed.post/3jzlxh3fay52u")), CancellationToken.None);
+                var likes = await api.GetLikes(new GetLikes(new AtUri("at://did:plc:yhgc5rlqhoezrx6fbawajxlh/app.bsky.feed.post/3jzmlmyhj5d2i")), CancellationToken.None);
                 likes.Switch(refresh =>
                 {
                     Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
@@ -162,6 +173,7 @@ enum Menu
     GetPosts,
     GetAuthorFeed,
     GetTimeline,
+    CreateLike,
     CreatePost,
     Exit
 }
