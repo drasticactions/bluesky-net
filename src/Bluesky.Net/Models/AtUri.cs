@@ -2,44 +2,64 @@ namespace Bluesky.Net.Models;
 
 using Internals;
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 public class AtUri
 {
-    private readonly string _value;
+    private string _host;
+    private static readonly Regex _atpUriRegex = new Regex(
+        @"^(at:\/\/)?((?:did:[a-z0-9:%-]+)|(?:[a-z][a-z0-9.:-]*))(\/[^?#\s]*)?(\?[^#\s]+)?(#[^\s]+)?$",
+        RegexOptions.IgnoreCase
+    );
 
     public AtUri(string uri)
     {
-        ArgumentNullException.ThrowIfNull(uri);
-        if (!Parser.TryParseUri(uri, out string?[] values))
+        Match match = _atpUriRegex.Match(uri);
+
+        if (match == null || !match.Success)
         {
-            throw new ArgumentException("Invalid AtUri", nameof(uri));
+            throw new FormatException($"Invalid at uri: {uri}");
         }
 
-        _value = uri;
-        Repository = new(values[1]);
-        if (values.Length >= 5)
-        {
-            Collection = values[4];
-        }
-
-        if (values.Length >= 8)
-        {
-            Record = values[7];
-        }
-
-        if (values.Length >= 10)
-        {
-            Fragment = values[9];
-        }
+        _host = match.Groups[2].Value ?? "";
+        Pathname = match.Groups[3].Value ?? "";
+        Hash = match.Groups[5].Value ?? "";
     }
-    
-    public DidOrHost Repository { get; }
 
-    public string? Collection { get; }
+    public string Hash { get; private set; }
+    public string Pathname { get; private set; }
+    public string Protocol => "at:";
+    public string Origin => $"at://{_host}";
+    public string Hostname => _host;
+    public string Collection => Pathname.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)[0];
+    public string Rkey => Pathname.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ElementAtOrDefault(1);
+    public string Href => ToAtUriString();
 
-    public string? Record { get; }
+    public string ToAtUriString()
+    {
+        var buffer = new System.Text.StringBuilder();
+        buffer.Append("at://");
+        buffer.Append(_host);
 
-    public string? Fragment { get; }
-    
-    public override string ToString() => _value;
+        if (!Pathname.StartsWith("/"))
+        {
+            buffer.Append($"/{Pathname}");
+        }
+        else
+        {
+            buffer.Append(Pathname);
+        }
+
+        if (!string.IsNullOrEmpty(Hash) && !Hash.StartsWith("#"))
+        {
+            buffer.Append($"#{Hash}");
+        }
+        else
+        {
+            buffer.Append(Hash);
+        }
+
+        return buffer.ToString();
+    }
 }

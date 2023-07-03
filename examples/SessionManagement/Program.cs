@@ -11,6 +11,8 @@ using Sharprompt;
 using System.Text;
 using System.Text.Json;
 
+
+var testUri = new AtUri("tomwalker.bsky.social");
 ServiceCollection services = new();
 services.AddBluesky();
 await using ServiceProvider sp = services.BuildServiceProvider();
@@ -75,7 +77,7 @@ await result.SwitchAsync(async session =>
                 break;
             case Menu.GetAuthorFeed:
                 var authorHandle = Prompt.Input<string>("Enter Author handle", defaultValue: "drasticactions.bsky.social");
-                Result<AuthorFeed> authorFeed = await api.GetAuthorFeed(new GetAuthorFeed(authorHandle, 10), CancellationToken.None);
+                Result<AuthorFeed> authorFeed = await api.GetAuthorFeed(new GetAuthorFeed(new AtUri(authorHandle), 10), CancellationToken.None);
                 authorFeed.Switch(refresh =>
                 {
                     Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
