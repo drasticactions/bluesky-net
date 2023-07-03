@@ -7,6 +7,12 @@ public record AuthorFeed(FeedViewPost[] Feed, string? Cursor);
 
 public record Timeline(FeedViewPost[] Feed, string? Cursor);
 
+public record LikesFeed(Like[] Likes, string? Cursor);
+
+public record RepostedFeed(Profile[] RepostedBy, string? Cursor);
+
+public record PostCollection(PostView[] Posts);
+
 public record Profile(string Did,
     string Handle,
     string DisplayName,

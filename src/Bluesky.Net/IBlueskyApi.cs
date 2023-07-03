@@ -75,4 +75,29 @@ public interface IBlueskyApi
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<Result<Timeline>> GetTimeline(GetTimeline query, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Result<PostCollection>> GetPosts(GetPosts query, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Result<LikesFeed>> GetLikes(GetLikes query, CancellationToken cancellationToken);
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Result<RepostedFeed>> GetRepostedBy(GetRepostedBy query, CancellationToken cancellationToken);
 }

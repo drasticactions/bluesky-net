@@ -119,6 +119,27 @@ await result.SwitchAsync(async session =>
                     }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
                 }
                 break;
+            case Menu.GetLikes:
+                var likes = await api.GetLikes(new GetLikes(new AtUri("at://did:plc:juem56avlegp5z4hctyxzg7z/app.bsky.feed.post/3jzlxh3fay52u")), CancellationToken.None);
+                likes.Switch(refresh =>
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
+                }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                break;
+            case Menu.GetRepostedBy:
+                var reposted = await api.GetRepostedBy(new GetRepostedBy(new AtUri("at://did:plc:juem56avlegp5z4hctyxzg7z/app.bsky.feed.post/3jzlxh3fay52u")), CancellationToken.None);
+                reposted.Switch(refresh =>
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
+                }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                break;
+            case Menu.GetPosts:
+                var posts = await api.GetPosts(new GetPosts(new List<AtUri>() { new AtUri("at://did:plc:juem56avlegp5z4hctyxzg7z/app.bsky.feed.post/3jzlxh3fay52u") }), CancellationToken.None);
+                posts.Switch(refresh =>
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(refresh, printOptions));
+                }, _ => Console.WriteLine(JsonSerializer.Serialize(_, printOptions)));
+                break;
             case Menu.Exit:
             default:
                 exit = true;
@@ -136,6 +157,9 @@ enum Menu
     GetProfile,
     ResolveHandle,
     RefreshToken,
+    GetLikes,
+    GetRepostedBy,
+    GetPosts,
     GetAuthorFeed,
     GetTimeline,
     CreatePost,

@@ -80,6 +80,15 @@ internal class BlueskyApi : IBlueskyApi, IDisposable
     public Task<Result<Timeline>> GetTimeline(GetTimeline query, CancellationToken cancellationToken)
         => _feed.GetTimeline(query, cancellationToken);
 
+    public Task<Result<PostCollection>> GetPosts(GetPosts query, CancellationToken cancellationToken)
+        => _feed.GetPosts(query, cancellationToken);
+
+    public Task<Result<LikesFeed>> GetLikes(GetLikes query, CancellationToken cancellationToken)
+        => _feed.GetLikes(query, cancellationToken);
+
+    public Task<Result<RepostedFeed>> GetRepostedBy(GetRepostedBy query, CancellationToken cancellationToken)
+        => _feed.GetRepostedBy(query, cancellationToken);
+
     public void Dispose()
     {
         _sessionManager?.Dispose();
